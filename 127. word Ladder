@@ -1,0 +1,106 @@
+Method 1:
+	try to change each of the characters  26 * k, check each of them if it is in the dictionary
+    Time: O(26k) for each word
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // build graph while finding it
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        Set<String> allWords = new HashSet<>();
+        for (String s : wordList) {
+            allWords.add(s);
+        }
+        queue.offer(beginWord);
+        visited.add(beginWord);
+        int level = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String cur = queue.poll();
+                if (cur.equals(endWord)) {
+                    return level;
+                }
+                List<String> neis = getAllPossibleNeis(cur);
+                for (String nei : neis) {
+                    if (allWords.contains(nei) && !visited.contains(nei)) {
+                        queue.offer(nei);
+                        visited.add(nei);
+                    }
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+    private List<String> getAllPossibleNeis(String s) {
+        List<String> res = new ArrayList<>();
+        char[] array = s.toCharArray();
+        for (int i = 0; i < array.length; i++) {
+            char origin = array[i];
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                if (ch == origin) {
+                    continue;
+                }
+                array[i] = ch;
+                res.add(new String(array));
+
+            }
+            array[i] = origin;
+        }
+        return res;
+    }
+}
+Method 2:
+	for each of the words, check if it is one character difference with cur vertex. 
+    Time: O(kn) for each word
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // build graph while finding it
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        queue.offer(beginWord);
+        visited.add(beginWord);
+        int level = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String cur = queue.poll();
+                if (cur.equals(endWord)) {
+                    return level;
+                }
+                List<String> neis = getAllPossibleNeis(cur, wordList);
+                for (String nei : neis) {
+                    if (!visited.contains(nei)) {
+                        queue.offer(nei);
+                        visited.add(nei);
+                    }
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+    
+    private List<String> getAllPossibleNeis(String s, List<String> wordList) {
+        List<String> res = new ArrayList<>();
+        int l = s.length();
+        for (String word : wordList) {
+            if (isNei(s, word)) {
+                res.add(word);
+            }
+        }
+        return res;
+    }
+    private boolean isNei(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                diff++;
+                if (diff > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
