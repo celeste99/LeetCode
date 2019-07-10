@@ -1,0 +1,62 @@
+### 207. return boolean
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            indegree[pre[0]]++;
+        }
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
+        int sum = 0;
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                queue.add(i);
+                sum++;
+            }
+        }
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            for (int[] pre : prerequisites) {
+                if (pre[1] == cur) {
+                    indegree[pre[0]]--;
+                    if (indegree[pre[0]] == 0) {
+                        queue.offer(pre[0]);
+                        sum++;                      
+                    }
+                }
+            }
+        }
+        return sum == numCourses;
+    }
+}
+### 210 return one of the result
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        for (int[] edge : prerequisites) {
+            indegree[edge[0]]++;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        int[] res = new int[numCourses];
+        int index = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            res[index++] = cur;
+            for (int[] edge : prerequisites) {
+                if (edge[1] == cur) {
+                    indegree[edge[0]]--;
+                    if (indegree[edge[0]] == 0) {
+                        queue.offer(edge[0]);
+                    }
+                }
+                
+            }
+        }
+        return index == numCourses ? res : new int[0];
+    }
+}

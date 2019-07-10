@@ -1,0 +1,58 @@
+class Solution {
+    public String alienOrder(String[] words) {
+        if (words == null || words.length == 0) {
+            return "";
+        }
+        Map<Character, Set<Character>> map = new HashMap<>();
+        Map<Character, Integer> indegree = new HashMap<>();
+        // Build up 2 map
+        for (String s : words) {
+            for (char ch : s.toCharArray()) {
+                indegree.put(ch, 0);
+            }
+        }
+        for (int i = 0; i < words.length - 1; i++) {
+            String cur = words[i];
+            String next = words[i + 1];
+            int length = Math.min(cur.length(), next.length());
+            for (int j = 0; j < length; j++) {
+                char c1 = cur.charAt(j);
+                char c2 = next.charAt(j);
+                if (c1 != c2) {
+                    Set<Character> set = new HashSet<>();
+                    if (map.containsKey(c1)) {
+                        set = map.get(c1);
+                    }
+                    if (!set.contains(c2)) {
+                        set.add(c2);
+                        map.put(c1, set);
+                        indegree.put(c2, indegree.get(c2) + 1);
+                    }
+                    break;
+                }
+            }
+        }
+        // derive the sequence
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
+                queue.offer(c);
+            }
+        }
+        StringBuilder s = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            s.append(c);
+            if (map.containsKey(c)) {
+                for (char c2 : map.get(c)) {
+                    int degree = indegree.get(c2);
+                    if (degree == 1) {
+                        queue.offer(c2);
+                    }
+                    indegree.put(c2, degree - 1);
+                }
+            }
+        }
+        return s.length() == indegree.size() ? s.toString() : "";
+    }
+}
