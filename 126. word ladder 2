@@ -1,0 +1,89 @@
+public class Solution {
+    // first use bfs to record the shortest path, record the prev node 
+    // run dfs on the prev relationship
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        List<String> solu = new ArrayList<>();
+        Map<String, Integer> level = new HashMap<>();               // record the shortest path 
+        Map<String, List<String>> prevMap = new HashMap<>();        // prev 
+        
+        bfs(beginWord, endWord, wordList, level, prevMap);
+        dfs(beginWord, endWord, prevMap, solu, res);
+        return res;
+    }
+    
+    public void bfs(String beginWord, String endWord, List<String> wordList, Map<String, Integer> level, Map<String, List<String>> prevMap){
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        
+        queue.offer(beginWord);
+        visited.add(beginWord);
+        level.put(beginWord,0);
+        
+        while(!queue.isEmpty()){
+            String tmp = queue.poll();
+            if(tmp.equals(endWord)){
+                return;
+            }
+            List<String> neighbors = getNeighbors(tmp.toCharArray());
+            for(String nei : neighbors){
+                if(wordList.contains(nei)){
+                    if(!visited.contains(nei)){
+                        level.put(nei, level.get(tmp) + 1);
+                        queue.offer(nei);
+                        visited.add(nei);
+                        addPrev(tmp, nei, prevMap);
+                    }else{
+                        if(level.get(nei) == level.get(tmp) + 1){
+                            addPrev(tmp, nei, prevMap);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private void addPrev(String seed, String cur, Map<String, List<String>> prevMap){
+        if(!prevMap.containsKey(cur)){
+            prevMap.put(cur, new ArrayList<String>());
+        }
+        prevMap.get(cur).add(seed);
+    }
+    
+    public void dfs(String beginWord, String endWord, Map<String, List<String>> prevMap, List<String> solu, List<List<String>> res){
+        // base case
+        if(prevMap.get(endWord) == null || prevMap.get(endWord).size() == 0){
+            if(endWord.equals(beginWord)){
+                solu.add(endWord);
+                Collections.reverse(solu);
+                res.add(new ArrayList<String>(solu));
+                Collections.reverse(solu);
+                solu.remove(solu.size() - 1);
+            }
+            return;
+        }
+        
+        solu.add(endWord);
+        List<String> prev = prevMap.get(endWord);
+        for(String str : prev){
+            dfs(beginWord, str, prevMap, solu, res);
+        }
+        solu.remove(solu.size() - 1);
+    }
+    
+    private List<String> getNeighbors(char[] array){
+        List<String> res = new ArrayList<>();
+        for(int i = 0; i < array.length; i++){
+            char tmp = array[i];
+            for(char ch = 'a'; ch <= 'z'; ch++){
+                if(tmp == ch){
+                    continue;
+                }
+                array[i] = ch;
+                res.add(new String(array));
+            }
+            array[i] = tmp;
+        }
+        return res;
+    }
+}
