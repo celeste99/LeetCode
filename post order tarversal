@@ -1,0 +1,36 @@
+public class Solution {
+  public List<Integer> postOrder(TreeNode root) {
+    List<Integer> res = new LinkedList<>();
+    if (root == null) {
+      return res;
+    }
+    Deque<TreeNode> stack = new LinkedList<>();
+    stack.offerFirst(root); 
+    TreeNode prev = null;
+    while (!stack.isEmpty()) {
+      TreeNode cur = stack.peekFirst();
+      if (prev == null || prev.left == cur || prev.right == cur) {
+        if (cur.left != null) {
+          stack.offerFirst(cur.left);
+        } else if (cur.right != null) {
+          stack.offerFirst(cur.right);
+        } else {
+          stack.pollFirst();
+          res.add(cur.key);
+        }
+      } else if (cur.left == prev) {
+        if (cur.right != null) {
+          stack.offerFirst(cur.right);
+        } else {
+          stack.pollFirst();
+          res.add(cur.key);
+        }
+      } else if (cur.right == prev) {
+          stack.pollFirst();
+          res.add(cur.key);
+      }
+      prev = cur;
+    }
+    return res;
+  }
+}
