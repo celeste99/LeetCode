@@ -1,1 +1,29 @@
+class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (n < 2) { // base case
+            return res;
+        }
+        List<Integer> sol = new ArrayList<>();
+        getFactors(2, n, sol, res);
+        return res;
+    }
+    private void getFactors(int start, int remain, List<Integer> sol, List<List<Integer>> res) {
+        // To make sure the solutoions are not decreasing we add 2 constrictions to aviod 
+        // duplicate solutions
+        for (int i = start; i*i <= remain; i++) {  // factor must in [start, sqrt(remian)]
+            if (remain % i == 0) { 
+                sol.add(i);  
+                sol.add(remain / i);
+                res.add(new ArrayList<Integer>(sol)); // Saving the solutions while travering
+                sol.remove(sol.size() - 1);
+                getFactors(i, remain / i, sol, res);
+                sol.remove(sol.size() - 1);
+            }
+        }
+        // recusion tree 倒数第二层结果就都得到了，最后一层全是质数，根本进不了for loop
+    }
+}
 
+// Time: O(sqrt(n) ^ log(n))
+// Space: O(log(n))
