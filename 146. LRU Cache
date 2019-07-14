@@ -3,14 +3,17 @@ class LRUCache {
 There are 4 operations we may encounter:
    1. get --> search() 
    2. set --> search() + put()      already in
-   3. insert --> search() + insert()      not already in
+   3. append --> search() + insert()      not already in
    4. remove --> findLeastRecentlyUsed() + delete()  before doing insert and we find full
-To satisify all the 4 operations in O(1) time. 1 and 2 indicate a Map structure to store [key, val] pairs, 3 indicates a order to maintain for each pair we inserted, maybe a List; And to make 4 O(1) time, we should use a DLinkedList for its O(1) delete operation; 
+To satisify all the 4 operations in O(1) time: 
+1 and 2 indicate a Map structure to store [key, val] pairs, 
+3 indicates a order to maintain for each pair we inserted, maybe a List; 
+And to make 4 O(1) time, we should use a DLinkedList for its O(1) delete operation; 
 
 After doing all this analysis, the data structure we are gonna use is：
 A HashMap that contains [key, ref_to_a_DLinkedNode];
-A DoubllyLinkedList which we store value in ListNode.val; And the least recently used
-A head/tail reference for reference of  oldest and insert newest
+A DoubllyLinkedList which we stores [key, val] pair in each DListNode;
+A head/tail reference for reference of  oldest and newest
 */ 
     static class DListNode {
         int key;
@@ -86,7 +89,7 @@ A head/tail reference for reference of  oldest and insert newest
         node.prev = node.next = null;
     }
 // we will always have size < capacity when we call append() function    
-     private void append(DListNode node) {
+    private void append(DListNode node) {
         map.put(node.key, node);
         if (tail == null) { // map.size() == 0进不去，因为此时size为1
             head = tail = node;
