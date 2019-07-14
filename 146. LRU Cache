@@ -1,4 +1,3 @@
-class LRUCache {
 /* 
 There are 4 operations we may encounter:
    1. get --> search() 
@@ -15,6 +14,7 @@ A HashMap that contains [key, ref_to_a_DLinkedNode];
 A DoubllyLinkedList which we stores [key, val] pair in each DListNode;
 A head/tail reference for reference of  oldest and newest
 */ 
+class LRUCache {
     static class DListNode {
         int key;
         int val;
@@ -64,7 +64,9 @@ A head/tail reference for reference of  oldest and newest
     
     private void remove(DListNode node) {
         map.remove(node.key);
-        /*if (node.prev != null && node.next != null) {
+        
+        /* Wrong approach! Be carefully about dereference null!
+        if (node.prev != null && node.next != null) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
         } else if (node.prev == null) {
@@ -73,7 +75,9 @@ A head/tail reference for reference of  oldest and newest
         } else { 
             tail = tail.prev;
             node.prev.next = null;
-        }*/
+        }
+        */ 
+
         if (node.prev != null) {
             node.prev.next = node.next;
         }
@@ -88,10 +92,11 @@ A head/tail reference for reference of  oldest and newest
         }
         node.prev = node.next = null;
     }
+
 // we will always have size < capacity when we call append() function    
     private void append(DListNode node) {
         map.put(node.key, node);
-        if (tail == null) { // map.size() == 0进不去，因为此时size为1
+        if (tail == null) { // 换成 map.size() == 0 进不去，因为此时size为1
             head = tail = node;
         } else {
             tail.next = node;
@@ -100,10 +105,3 @@ A head/tail reference for reference of  oldest and newest
         }
     }
 }
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
