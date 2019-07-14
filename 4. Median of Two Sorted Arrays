@@ -1,0 +1,63 @@
+/**if we merge nums1 and nums2 in to a sorted larger array, 
+* the median is to find the ((m+n)/2)+1-th smallest element in two array, if m+n is odd
+*                  find the (m+n)/2+1 and (m+n)/2 smallest element in two array, if m+n is even
+* The problem can be changed to "Find k-th element in two sorted array"
+* we compare k/2th element in both array and we can abandon k/2 part of one array each time;
+* 
+* we can prove it by contradiction
+* XXkXiXXX  array1
+* XXXXjXXXXXX  array2
+* we need to find the k-th samllest element in two array
+* Assume a1.i < a2.j and we remove a1.0 ... a1.i will miss the target(a1.k)
+* We can get a1.k < a1.i < a2.j, the total element that is smaller than a1.k is at most 
+* between a1.[0,k] and a2.[0,j], which is clearly samller than k. Proved.
+* a1[0, i] will not contain the k-th element
+* 
+*/
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length;
+        int n = nums2.length;
+        if ((m + n) % 2 == 0) {
+            int left = kth(nums1, nums2, (m + n) / 2, 0, 0);
+            int right = kth(nums1, nums2, (m + n) / 2 + 1, 0, 0);
+            return (double)(left + right) / 2; 
+        } else {
+            return kth(nums1, nums2, (m + n) / 2 + 1, 0, 0);
+        }
+    }
+    private int kth(int[] a, int[] b, int k, int aStart, int bStart) {
+        // base case
+        // we can gurentee this target must exist
+        if (aStart >= a.length) {
+            return b[bStart + k - 1];
+        }
+        if (bStart >= b.length) {
+            return a[aStart + k - 1];
+        }
+        if (k == 1) {
+            return Math.min(a[aStart], b[bStart]);
+        }
+        /* this one is good as well
+        int aMid = (aStart + k / 2 - 1) >= a.length ? a.length - 1 : (aStart + k / 2 - 1);
+        int bMid = (bStart + k / 2 - 1) >= b.length ? b.length - 1 : (bStart + k / 2 - 1);
+        if (a[aMid] < b[bMid]) {
+            int delete = aMid - aStart + 1;
+            return kth(a, b, k - delete, aMid + 1, bStart);
+        } else {
+            int delete = bMid - bStart + 1;
+            return kth(a, b, k - delete, aStart, bMid + 1);
+        } */
+        
+        int aMid = aStart + k / 2 - 1;
+        int bMid = bStart + k / 2 - 1;
+        // if a.size is too small, remove elements from b first
+        int aVal = aMid < a.length ? a[aMid] : Integer.MAX_VALUE;
+        int bVal = bMid < b.length ? b[bMid] : Integer.MAX_VALUE;
+        if (aVal < bVal) {
+            return kth(a, b, k - k / 2, aMid + 1, bStart);
+        } else {
+            return kth(a, b, k - k / 2, aStart, bMid + 1);
+        }
+    }
+}
