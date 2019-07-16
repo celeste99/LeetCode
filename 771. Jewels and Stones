@@ -1,0 +1,22 @@
+class Solution {
+    public int numJewelsInStones(String J, String S) {
+        if (J == null || S == null || J.length() == 0 || S.length() == 0) {
+            return 0;
+        }
+        // Use a hashset to represents jew type in J
+        Set<Character> jew = new HashSet<>();
+        int res = 0;
+        for (char c : J.toCharArray()) { // array iterator is quicker than J.CharAt(i)
+            jew.add(c);
+        }
+        for (char c : S.toCharArray()) {
+            if (jew.contains(c)) {
+                jew.add(c);
+                res++;
+            }
+        }
+        return res;
+    }
+}
+// Time: O(J.length() + S.length())
+// Space: O(J.length())
