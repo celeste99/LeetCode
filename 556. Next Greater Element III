@@ -1,0 +1,38 @@
+class Solution {
+    public int nextGreaterElement(int n) {
+        char[] array = (n + "").toCharArray(); // int to char[]!
+
+        // find next greater element
+        for (int i = array.length - 1; i > 0; i--) {
+            if (array[i - 1] < array[i]) { // find first decreasing element
+                int tmp = findSmallestLargerIndex(array, i, array.length - 1, array[i - 1]);
+                swap(array, i - 1, tmp);
+                reverse(array, i, array.length - 1);
+                long res = Long.parseLong(new String(array)); //  char[] to int! 
+                return res <= Integer.MAX_VALUE ? (int)res : -1; 
+            }
+        }
+        return -1;
+    }
+    private int findSmallestLargerIndex(char[] nums, int left, int right, char target) {
+        while (left < right - 1) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+        return nums[right] > target ? right : left;
+    }
+    private void reverse(char[] nums, int left, int right) {
+        while (left < right) {
+            swap(nums, left++, right--);
+        }
+    }
+    private void swap(char[] nums, int left, int right) {
+        char tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+    }
+}
