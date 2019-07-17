@@ -1,0 +1,63 @@
+## 条件语句防止溢出
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            getRange(nums, lower, upper, res);
+            return res;
+        }
+        // 防止溢出
+        if (nums[0] > lower) {
+            getRange(nums, lower, nums[0] - 1, res);
+        }
+        for (int i = 0; i < nums.length - 1; i++) {
+            // 防止相等，溢出
+            if (nums[i + 1] > nums[i]) {
+                getRange(nums, nums[i] + 1, nums[i + 1] - 1, res);
+            }   
+        }
+        // 防止溢出
+        if (nums[nums.length - 1] < upper) {
+            getRange(nums, nums[nums.length - 1] + 1, upper, res);
+        }
+        return res;
+    }
+    private void getRange(int[] nums, int left, int right, List<String> res) {
+        if (left > right) {
+            return;
+        } 
+        if (left == right) {
+            res.add(left + "");
+        } else {
+            res.add(left + "->" + right);
+        }
+        return;
+    }
+}
+## long instead of integer
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            getRange(nums, lower, upper, res);
+            return res;
+        }
+        getRange(nums, lower, (long)nums[0] - 1, res);
+        for (int i = 0; i < nums.length - 1; i++) {
+            getRange(nums, (long)nums[i] + 1, (long)nums[i + 1] - 1, res);
+        }
+        getRange(nums, (long)nums[nums.length - 1] + 1, upper, res);
+        return res;
+    }
+    private void getRange(int[] nums, long left, long right, List<String> res) {
+        if (left > right) {
+            return;
+        } 
+        if (left == right) {
+            res.add(left + "");
+        } else {
+            res.add(left + "->" + right);
+        }
+        return;
+    }
+}
