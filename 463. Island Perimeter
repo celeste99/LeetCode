@@ -1,0 +1,49 @@
+// dfs
+// O(n) time; O(n) space
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        // dfs the island; met 0, res++
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        int[] res = new int[1];
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    dfs(grid, i, j, res, visited);
+                }
+            }
+        }
+        return res[0];
+    }
+    private void dfs(int[][] grid, int row, int col, int[] res, boolean[][] visited) {
+        // 4个deriction: water res++ ; land && !visited, dfs        
+        if (row < 0 || row >= grid.length || col < 0|| col >= grid[0].length || grid[row][col] == 0) {
+            res[0]++;
+            return;
+        } else if (visited[row][col]) {
+            return;
+        }
+        visited[row][col] = true;
+        dfs(grid, row - 1, col, res, visited);
+        dfs(grid, row + 1, col, res, visited);
+        dfs(grid, row, col - 1, res, visited);
+        dfs(grid, row, col + 1, res, visited);
+    }
+}
+## 从上到下，从左到右linear scan，每次看右边/下边是否有land，
+public static int islandPerimeter(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int result = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    result += 4;
+                    if (i > 0 && grid[i-1][j] == 1) result -= 2;
+                    if (j > 0 && grid[i][j-1] == 1) result -= 2;
+                }
+            }
+        }
+        return result;
+    }
