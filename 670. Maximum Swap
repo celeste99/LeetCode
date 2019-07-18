@@ -1,0 +1,62 @@
+## greedy
+class Solution {
+    public int maximumSwap(int num) {
+        // didn't find first increasing element x, return num
+        char[] a = Integer.toString(num).toCharArray();
+        int[] last = new int[10];
+        for (int i = 0; i < a.length; i++) {
+            last[a[i] - '0'] = i;
+        }
+        for (int i = 0; i < a.length; i++) {
+            for (int d = 9; d > a[i] - '0'; d--) {
+                if (last[d] > i) {
+                    char tmp = a[i];
+                    a[i] = a[last[d]];
+                    a[last[d]] = tmp;
+                    return Integer.valueOf(new String(a));
+                }
+            }
+        }
+        return num;
+    }
+}
+
+
+## bad
+class Solution {
+    public int maximumSwap(int num) {
+        // didn't find first increasing element x, return num
+        char[] a = (num + "").toCharArray();
+        for (int i = 0; i < a.length - 1; i++) {
+            if (a[i] < a[i + 1]) { // find first increasing element x
+                // find the largest in (i, end], which is y
+                int y = findLargest(a, i + 1, a.length - 1);
+                // linear scan from 0 to x, find first one that is smaller that y, which is k
+                int k = findFirstSmaller(a, 0, i, a[y]);
+                swap(a, k, y); // replace k and y, return 
+                return Integer.parseInt(new String(a));
+            }
+        }
+        return num;
+    }
+    private int findLargest(char[] a, int left, int right) {
+        int y = left;
+        for (int i = left + 1; i <= right; i++) {
+            y = (a[i] >= a[y]) ? i : y;
+        }
+        return y;
+    }
+    private int findFirstSmaller(char[] a, int left, int right, char target) {
+        for (int i = left; i <= right; i++) {
+            if (a[i] < target) {
+                return i;
+            }
+        }
+        return right;
+    }
+    private void swap(char[] a, int left, int right) {
+        char tmp = a[left];
+        a[left] = a[right];
+        a[right] = tmp;
+    }
+}
