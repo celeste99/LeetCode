@@ -1,0 +1,27 @@
+class Solution {
+    public String getPermutation(int n, int k) {
+        StringBuilder sb = new StringBuilder();
+        // create an array of factorial lookup
+        int[] factorial = new int[n+1];
+        int sum = 1;
+        factorial[0] = 1;
+        for (int i=1; i<=n; i++){
+            sum *= i;
+            factorial[i] = sum; // factorial[] = {1, 1, 2, 6, 24, ... n!}
+        }
+        // create a list of numbers to get indices
+        List<Integer> list = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            list.add(i); // List = {1, 2, 3, ..., n}
+        }
+        // find k-th permutation
+        k--;
+        for (int i = 1; i <= n; i++) {
+            int divide = k / factorial[n - i];
+            sb.append(list.get(divide));
+            list.remove(divide);
+            k = k - divide * factorial[n - i];
+        }
+        return new String(sb);
+    }
+}
