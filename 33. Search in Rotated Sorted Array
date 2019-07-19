@@ -1,3 +1,4 @@
+### ALWAYS finding the increasing part and check if target is there
 class Solution {
     public int search(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
@@ -5,37 +6,29 @@ class Solution {
         }
         int left = 0;
         int right = nums.length - 1;
-        while (left < right) {
+        while (left < right - 1) {
             int mid = left + (right - left) / 2;
             if (nums[mid] == target) {
                 return mid;
             }
-            if (nums[left] < nums[right]) {
-                if (nums[mid] < target) {
+            if (nums[left] <= nums[mid]) {
+                if (target >= nums[left] && target <= nums[mid]) {
+                    right = mid;
+                } else {
                     left = mid + 1;
+                }
+            } else {
+                if (target >= nums[mid] && target <= nums[right]) {
+                    left = mid;
                 } else {
                     right = mid - 1;
                 }
-            } else {
-                if (target >= nums[left]) {
-                    // 找左边递增块
-                    if (nums[mid] < nums[left]) {
-                        right = mid - 1;
-                    } else {
-                        right--;
-                    }
-                } else if (target <= nums[right]) {
-                    // 找右边递增块
-                    if (nums[mid] > nums[right]) {
-                        left = mid + 1;
-                    } else {
-                        left++;
-                    }
-                } else {
-                    return -1;
-                }
             }
         }
-        return nums[left] == target ? left : -1;
+        if (nums[left] != target && nums[right] != target) {
+            return -1;
+        } else {
+            return nums[left] == target ? left : right;
+        }
     }
 }
