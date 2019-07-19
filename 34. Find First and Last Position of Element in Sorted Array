@@ -4,35 +4,38 @@ class Solution {
         if (nums == null || nums.length == 0) {
             return res;
         }
-        int left1 = 0, left2 = 0, right1 = nums.length - 1, right2 = nums.length - 1;
-        while (left1 < right1) {
-            int mid1 = left1 + (right1 - left1) / 2;
+        int left = 0, right = nums.length - 1;
+        // find first occurrence
+        while (left < right) {
+            int mid = left + (right - left) / 2;
             // find 1st occurrence
-            if (nums[mid1] == target) {
-                right1 = mid1;
-            } else if (nums[mid1] > target) {
-                right1 = mid1 - 1;
+            if (nums[mid] == target) {
+                right = mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
             } else {
-                left1 = mid1 + 1;
+                left = mid + 1;
             }
         }
-        while (left2 < right2 - 1) {
-            int mid2 = left2 + (right2 - left2) / 2;
-            // find last occurrence
-            if (nums[mid2] == target) {
-                left2 = mid2;
-            } else if (nums[mid2] > target) {
-                right2 = mid2 - 1;
+        // return if there is no such element, don't need to run the second bs
+        if (nums[left] != target) {
+            return res;
+        } else {
+            res[0] = left;
+            right = nums.length - 1;
+        }
+        // find second occurrence
+        while (left < right) {
+            int mid = left + (right - left) / 2 + 1;
+            if (nums[mid] == target) {
+                left = mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
             } else {
-                left2 = mid2 + 1;
+                left = mid + 1;
             }
         }
-        res[0] = (nums[left1] == target) ? left1 : -1;
-        if (nums[right2] == target) {
-            res[1] = right2;
-        } else if (nums[left1] == target) {
-            res[1] = left2;
-        }
+        res[1] = left;
         return res;
     }
 }
