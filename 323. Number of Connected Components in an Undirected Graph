@@ -1,0 +1,24 @@
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        int[] roots = new int[n];
+        for (int i = 0; i < n; i++) {
+            roots[i] = i;
+        }
+        for (int[] e : edges) {
+            int root1 = findRoot(roots, e[0]);
+            int root2 = findRoot(roots, e[1]);
+            if (root1 != root2) {
+                roots[root2] = root1;
+                n--;
+            }
+        }
+        return n;
+    }
+    private int findRoot(int[] roots, int index) {
+        while (roots[index] != index) {
+            roots[index] = roots[roots[index]]; // 使之全指向root， path compression
+            index = roots[index];
+        }
+        return index;
+    }
+}
