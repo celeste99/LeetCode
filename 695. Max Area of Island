@@ -1,0 +1,30 @@
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int res = 0;
+        if (grid == null || grid.length == 0) {
+            return res;
+        }
+        int[] num = new int[1];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    num[0] = 0;
+                    dfs(grid, i, j, num);
+                    res = (res > num[0]) ? res : num[0];
+                }
+            }
+        }
+        return res;
+    }
+    private void dfs(int[][] grid, int i, int j, int[] num) {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0) {
+            return;
+        }
+        num[0] = num[0] + 1;
+        grid[i][j] = 0;
+        dfs(grid, i - 1, j, num);
+        dfs(grid, i, j - 1, num);
+        dfs(grid, i + 1, j, num);
+        dfs(grid, i, j + 1, num);
+    }
+}
