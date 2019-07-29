@@ -1,0 +1,57 @@
+## DFS
+class Solution {
+    public int findCircleNum(int[][] M) {
+        int[] visited = new int[M.length];
+        int res = 0;
+        for (int i = 0; i < M.length; i++) {
+            if (visited[i] == 0) {
+                dfs(M, visited, i);
+                res++;
+            }
+        }
+        return res;
+    }
+    private void dfs(int[][] M, int[] visited, int i) {
+        visited[i] = 1;
+        for (int j = 0; j < M.length; j++) {
+            if (M[i][j] == 1 && visited[j] == 0) {
+                dfs(M, visited, j);
+            }
+        }
+    }
+}
+
+
+## Union find - wrong answer
+class Solution {
+    public int findCircleNum(int[][] M) {
+        if (M == null || M.length == 0) {
+            return 0;
+        }
+        int n = M.length;
+        int[] roots = new int[n];
+        for (int i = 0; i < n; i++) {
+            roots[i] = i;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (M[i][j] == 1) {
+                    int root1 = find(roots, i);
+                    int root2 = find(roots, j);
+                    if (root1 != root2) {
+                        roots[root2] = root1;
+                        n--;
+                    }
+                }
+            }
+        }
+        return n;
+    }
+    private int find(int[] roots, int index) {
+        while (roots[index] != index) {
+            roots[index] = roots[roots[index]];
+            index = roots[index];
+        }
+        return index;
+    }
+}

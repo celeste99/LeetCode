@@ -1,0 +1,20 @@
+// dfs + mark visited 保证所有 node 只 visit 一次
+// postOrder保证所有newNeis都创建出来了
+class Solution {
+    public Node cloneGraph(Node node) {
+        Map<Node, Node> map = new HashMap<>();
+        dfs(node, map);
+        return map.get(node);
+    }
+    private void dfs(Node node, Map<Node, Node> map) {
+        Node newNode = map.get(node);
+        if (newNode != null) return; // already visited 
+        List<Node> neighbors = new ArrayList<>();
+        newNode = new Node(node.val, neighbors); // copy the node
+        map.put(node, newNode); // mark visited
+        for (Node nei : node.neighbors) {
+            dfs(nei, map); // dfs first to build newNeis!!!!!!!
+            newNode.neighbors.add(map.get(nei)); // copy outgoing edges
+        }
+    }
+}
