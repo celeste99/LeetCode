@@ -1,13 +1,11 @@
-/*
-解空间maximum distance between adjacent gas stations: 
- [1  x  2  x  3  x  4  x  5  x  6  x  7  x  8  x  9  x 10]
-0  0.1  0.2  x  x  x min_distance(0.5)  0.6  0.7  y  y  y  1.0
-其中xxx均是达不到的，yyy均是可实现的
+/*  解空间maximum distance between adjacent gas stations: 
+     [1  x  2  x  3  x  4  x  5  x  6  x  7  x  8  x  9  x 10]
+    0  0.1  0.2  x  x  x min_distance(0.5)  0.6  0.7  y  y  y  1.0
+    其中xxx均是达不到的，yyy均是可实现的
 
-f(i): 在N个stations之间最多再添加K个stations，使得任意两个stations之间的距离 <= i 吗?
-即: f(x) = false   f(y) = true
-我们要做的就是找到第一个y
-
+    f(i): 在N个stations之间最多再添加K个stations，使得任意两个stations之间的距离 <= i 吗?
+    即: f(x) = false   f(y) = true
+    我们要做的就是找到第一个y
 */
 class Solution {
     public double minmaxGasDist(int[] stations, int K) {
