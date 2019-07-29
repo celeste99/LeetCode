@@ -1,0 +1,42 @@
+## Brute Force
+Time: O(n^3)
+## PrefixSum
+Time: O(n^2)
+## Binary Search
+Time: O(nlogn)
+
+class Solution {
+/*
+search space是 subarray的length: 0 1 2 x x x min_length y y y array.length
+其中xxx均是不满足条件的，yyy均是满足条件的
+*/
+    public int minSubArrayLenII(int s, int[] nums) {
+        int left = 1;
+        int right = nums.length;
+        int res = right;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (windowExist(mid, nums, s)) { // only in this block can update res
+                right = mid - 1;
+                res = Math.min(res, mid);
+            } else {
+                left = mid + 1;
+            }
+        }
+   return res;
+    }
+
+    private boolean windowExist(int size, int[] nums, int s) {
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i >= size) { // 减去left元素
+                sum -= nums[i - size];
+            }
+            sum += nums[i]; // 加上right元素
+            if (sum >= s) { 
+                return true;
+            }    
+        }
+    return false;
+    }
+}
