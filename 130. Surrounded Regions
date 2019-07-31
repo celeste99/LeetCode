@@ -7,6 +7,7 @@ time: O(n) Space: O(1)
 run dfs to tarverse all the reachable '0's once, and mark them if no border connected
 time: O(n) Space: O(n)
 */
+*/
 class Solution {
     public void solve(char[][] board) {
         if (board == null || board.length == 0) {
