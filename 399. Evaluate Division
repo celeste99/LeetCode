@@ -27,8 +27,8 @@ class Solution {
         }
         return res;
     }
-    // 实现方法：从上往下传值+从下往上传值
-    // 也可以维护global res[0]，每次发现结果写入global，void返回值
+    // 实现方法1：从上往下传值+从下往上传值(此题这样做更简单) + mark visited保证只遍历一次(coz we only need find one path)
+    // 实现方法2: 无返回值，维护2个global变量res[0]和sol[0](sol要直上直下传递做back-tracking，res[0]初始值为-1.0) + mark visited
     private double dfs(Map<String, Map<String, Double>> graph, Set<String> visited, 
                         String init, String target, double sol) {
         // base case
