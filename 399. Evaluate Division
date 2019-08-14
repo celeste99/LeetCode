@@ -1,0 +1,61 @@
+// 1. This is a graph problem. 
+// 2. Each String represents a vertex.
+// 3. Each division relationship between 2 String is an edge in the graph
+// 4. So, this is a graph path problem
+// 5. What we are doing is to use dfs to find a path between 2 Strings, and calculate the result.
+// 6. Time: O(|V|+|E|) coz we need to traverse all the vertex in the graph
+//    Space: O(|V|+|E|) coz we need to build the graph first
+class Solution {
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // 1. build graph first
+        Map<String, Map<String, Double>> graph = new HashMap<>();
+        for (int i = 0; i < values.length; i++) {
+            // get 2 String
+            String d1 = equations.get(i).get(0);
+            String d2 = equations.get(i).get(1);
+            // add edges to graph
+            addEdge(d1, d2, graph, values[i]);
+            addEdge(d2, d1, graph, 1 / values[i]);
+        }
+        // 2. dfs find path
+        double[] res = new double[queries.size()];
+        for (int j = 0; j < queries.size(); j++) {
+            String init = queries.get(j).get(0);
+            String target = queries.get(j).get(1);
+            Set<String> visited = new HashSet<>();
+            res[j] = dfs(graph, visited, init, target, 1.0);
+        }
+        return res;
+    }
+    // 实现方法：从上往下传值+从下往上传值
+    // 也可以维护global res[0]，每次发现结果写入global，void返回值
+    private double dfs(Map<String, Map<String, Double>> graph, Set<String> visited, 
+                        String init, String target, double sol) {
+        // base case
+        if (!graph.containsKey(init)) {
+            return -1.0;
+        }
+        if (init.equals(target)) {
+           return sol;
+        }
+        visited.add(init);
+        Map<String, Double> neis = graph.get(init);
+        for (Map.Entry<String, Double> entry : neis.entrySet()) {
+            if (!visited.contains(entry.getKey())) {
+               double weight = dfs(graph, visited, entry.getKey(), target, sol * entry.getValue());
+                if (weight != -1.0) {
+                    return weight;
+                }
+            }  
+        }
+       return -1.0; 
+    }
+    private void addEdge(String d1, String d2, Map<String, Map<String, Double>> graph, double value) {
+        Map<String, Double> neis = graph.get(d1);
+        if (neis == null) {
+            neis = new HashMap<>();
+            graph.put(d1, neis);
+        }
+        neis.put(d2, value);
+    }
+}
