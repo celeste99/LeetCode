@@ -2,8 +2,8 @@
 // 2. the nodes and edges are reprensnted in the question
 // 3. this is a graph treverse problem
 // 4. we can use dfs to traverse all the node in the graph, and we will mark the node as visited to make sure each node is visited only once. while traversing the graph, we will set flag on each node and check whether its neighbor has the opposite flag or not.
-// Time: O(|V|+|E|)
-// Space: O(1)
+// Time: O(|V|)  <node, flag> map
+// Space: O(|V|) call stack
 class Solution {
     public boolean isBipartite(int[][] graph) {
         Map<Integer, Boolean> visited = new HashMap<>();
