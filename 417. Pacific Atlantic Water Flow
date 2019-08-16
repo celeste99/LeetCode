@@ -1,34 +1,36 @@
-// S1: 2遍DFS
-// S2: 2遍KBFS
+/*
+Solution 1 - BF
+vertex: coordinates
+edges: 4-dir coordinates that has smaller/equal value
+
+for each vertex, 
+run DFS twice: to traverse the whole graph to see if it can reach one ocean
+
+Time: O(|V| * (|V| + |E|)) = O(n^2)
+Space: O(n)
+
+Solution 2 - DFS + memo
+
+edges: 4-dir coordinates that has smaller/equal value
+
+for each vertex, 
+run DFS twice: to traverse the whole graph to see if it can reach one ocean, while traversing the graph, memo each node can reach the ocean or not, mark node as visited after the memo.
+
+Time: O(n)
+Space: O(n)
+
+Solution 3 - flow from ocean
+// S1: DFS + mark visited
+// S2: KBFS
+vertex: coordinates
+edges: 4-dir coordinates that has larger value
+
+for each vertex in the border:
+	run dfs to tarverse all the vertex reachable, while traversing, mark it as visited record the vertex
+
+*/
 class Solution {
-    int[][]dir = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
     public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-            return res;
-        }/
-        int m = matrix.length;
-        int n = matrix[0].length
-        int[][] P = new int[m][n]; // 0 -> not visited; 1 -> can flow; -1 -> can't flow
-        int[][] A = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (P[i][j] == 0) {
-                    dfsP(matrix, P, i, j);
-                }
-                if (A[i][j] == 0) {
-                    dfsA(matrix, A, i, j);
-                }
-            }
-        }
-        // post-process
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (P[i][j] == 1 && A[i][j] == 1) {
-                    res.add(Arrays.asList(i, j));
-                }
-            }
-        }
-        return res;
+        
     }
 }
