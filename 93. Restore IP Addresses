@@ -1,0 +1,33 @@
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        if (s == null || s.length() < 4) {
+            return res;
+        }
+        StringBuilder sb = new StringBuilder();
+        dfs(s, sb, res, 0, 0);
+        return res;
+    }
+    // index: left index for each section
+    // sb: one possible ip address
+    private void dfs(String s, StringBuilder sb, List<String> res, int index, int secNum) {
+        if (index == s.length()) { // base case: 判断什么时候该停下
+            if (secNum == 4) {
+                res.add(sb.substring(1));
+            }
+            return;
+        }
+        if (secNum == 4) { // 3. pruning - before reach the base case
+            return;
+        }
+        for (int i = 1; (i <= (s.charAt(index) == '0' ? 1 : 3)) // 1. pruning - avoid leading 0
+             && i + index <= s.length(); i++) {             
+            String sec = s.substring(index, index + i);
+            if (Integer.valueOf(sec) <= 255) { // 2. pruning - invalid section
+                sb.append("." + sec);
+                dfs(s, sb, res, index + i, secNum + 1);
+                sb.delete(sb.length() - i - 1, sb.length()); // backtracking
+            }
+        }
+    }
+}
