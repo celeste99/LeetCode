@@ -4,9 +4,13 @@ for each node, do DFS2 to check if there is any circle exist in a path starting 
 ! duplicate calculation
 
 2. when doing dfs, we mark all the node in "circle path" as visited, so each node will visit only once
-visited -> return false
 
-false -> no backtraking
+3. Reverse edge
+using a queue, remove edge
+
+
+Time: O(|V| + |E|)
+Space: O(|V|)
 */
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
