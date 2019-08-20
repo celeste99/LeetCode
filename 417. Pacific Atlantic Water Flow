@@ -21,13 +21,17 @@ Space: O(n)
 
 Solution 3 - flow from ocean
 // S1: DFS + mark visited
-// S2: KBFS
 vertex: coordinates
 edges: 4-dir coordinates that has larger value
 
 for each vertex in the border:
-	run dfs to tarverse all the vertex reachable, while traversing, mark it as visited record the vertex
+	run dfs to tarverse all the vertex reachable, while traversing, mark it as visited
+Time: O(n)
+Space:O(n)
 
+// S2: KBFS
+Time: O(n)
+Space: O(n)
 */
 S1: 
 class Solution {
