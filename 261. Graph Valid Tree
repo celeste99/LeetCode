@@ -1,0 +1,64 @@
+/*
+Tree properties: starting form each node, we can reach any other node without cycle
+
+1. no cycle
+do dfs from any node to check if there is any node visited more than once
+mark node visited if there is no cycle starting from this node
+2. connected
+check the number of visited equals to n
+
+*/
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        if (edges.length != n - 1) {
+            return false;
+        }
+        if (edges == null || edges.length == 0) {
+            return true;
+        }
+        // build graph
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            Set<Integer> neis = graph.get(edge[0]);
+            if (neis == null) {
+                neis = new HashSet<>();
+                graph.put(edge[0], neis);
+            }
+            neis.add(edge[1]);
+            
+            neis = graph.get(edge[1]);
+            if (neis == null) {
+                neis = new HashSet<>();
+                graph.put(edge[1], neis);
+            }
+            neis.add(edge[0]);
+        }
+        Set<Integer> visited = new HashSet<>();
+        Set<Integer> visiting = new HashSet<>();
+        boolean hasCycle = dfs(graph, 0, visiting, visited);
+        return !hasCycle && visited.size() == n;
+    }
+    private boolean dfs(Map<Integer, Set<Integer>> graph, int node, Set<Integer> visiting, 
+                        Set<Integer> visited) {
+        // base case
+        if (visiting.contains(node)) { // has cycle
+            return true;
+        }
+        if (visited.contains(node)) {
+            return false;
+        }
+        visited.add(node);
+        Set<Integer> neis = graph.get(node);
+        if (neis == null) {
+            return false;
+        }
+        visiting.add(node);        
+        for (Integer nei : neis) {
+            if (dfs(graph, nei, visiting, visited)) {
+                return true;
+            }
+        }
+        visiting.remove(node);
+        return false;
+    }
+}
