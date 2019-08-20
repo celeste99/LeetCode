@@ -29,8 +29,52 @@ for each vertex in the border:
 	run dfs to tarverse all the vertex reachable, while traversing, mark it as visited record the vertex
 
 */
+S1: 
 class Solution {
     public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-        
+        List<List<Integer>> res = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return res;
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+        // flow from ocean
+        for (int i = 0; i < m; i++) {
+            // left edge for pacific
+            dfs(matrix, i, 0, pacific, Integer.MIN_VALUE);
+            // right edge for atlantic
+            dfs(matrix, i, n - 1, atlantic, Integer.MIN_VALUE);
+        }
+        for (int j = 0; j < n; j++) {
+            // top edge for pacific
+            dfs(matrix, 0, j, pacific, Integer.MIN_VALUE);
+            // bottom edge for atlantic
+            dfs(matrix, m - 1, j, atlantic, Integer.MIN_VALUE);
+        }
+        // post processing
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    res.add(Arrays.asList(i, j));
+                }
+            }
+        }
+        return res;
+    }
+    int[][] dir = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    private void dfs(int[][] matrix, int i, int j, boolean[][] visited, int height) {
+        // base case - 所有的invalid条件放在一起，使得for循环尽可能简洁
+        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length ||
+           visited[i][j] || matrix[i][j] < height) {
+            return;
+        }
+        visited[i][j] = true;
+        for (int[] d : dir) {
+            dfs(matrix, i + d[0], j + d[1], visited, matrix[i][j]);
+        }
     }
 }
+
+
