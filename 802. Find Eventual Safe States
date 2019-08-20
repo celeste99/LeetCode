@@ -36,7 +36,8 @@ class Solution {
     }
     private boolean dfs(int[][] graph, int node, boolean[] visiting, boolean[] visited) {
         // base case
-        if (graph[node].length == 0 || visited[node]) {
+        if (//graph[node].length == 0 || 不用写，下面for loop会判断，并且visited要改
+            visited[node]) {
             return true; // find stop point or must have stop point for any choice
         }
         if (visiting[node]) {
