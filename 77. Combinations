@@ -1,0 +1,20 @@
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> sol = new ArrayList<>();
+        dfs(n, k, 1, sol, res);
+        return res;
+    }
+    public void dfs(int n, int k, int level, List<Integer> sol, List<List<Integer>> res) {
+        // base case
+        if (sol.size() == k) {
+            res.add(new ArrayList<>(sol));
+            return;
+        }
+        for (int i = level; i <= n; i++) {
+            sol.add(i);
+            dfs(n, k, i + 1, sol, res);
+            sol.remove(sol.size() - 1);
+        }
+    }
+}
