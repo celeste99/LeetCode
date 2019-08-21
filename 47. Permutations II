@@ -1,0 +1,35 @@
+/*
+we should use an set to store all the swaped element in this level, 
+avoid swaping duplicate element in the same position
+*/
+
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        List<Integer> perm = new ArrayList<>();
+        for (int num : nums) {
+            perm.add(num);
+        }
+        dfs(perm, 0, res);
+        return res;
+    }
+    private void dfs(List<Integer> perm, int index, List<List<Integer>> res) {
+        // base case
+        if (index == perm.size()) {
+            res.add(new ArrayList<>(perm));
+            return;
+        }
+        Set<Integer> used = new HashSet<>();
+        for (int i = index; i < perm.size(); i++) {
+            if (!used.contains(perm.get(i))) {
+                used.add(perm.get(i));
+                Collections.swap(perm, index, i);
+                dfs(perm, index + 1, res);
+                Collections.swap(perm, index, i);
+            }
+        }
+    }
+}
