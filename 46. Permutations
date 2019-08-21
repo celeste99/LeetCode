@@ -1,0 +1,34 @@
+/*
+1. we can using dfs backtracking to find all solutions
+2. In the recursion tree, the level i means what to put on the i-position; 
+   in each branch, we will iteratively pick an element from the unchosen dataset 
+   to put on the specific position
+3. When the unchose dataset is empty, which means we have no element to choose, 
+   we find one permutation, the solution should be added to our result
+*/
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        ArrayList<Integer> sol = new ArrayList<>();
+        for (int num : nums) {
+            sol.add(num);
+        }
+        dfs(sol, 0, res);
+        return res;
+    }
+    private void dfs(List<Integer> nums, int index, List<List<Integer>> res) {
+        // base case
+        if (index == nums.size()) {
+            res.add(new ArrayList<Integer>(nums));
+            // return;
+        }
+        for (int i = index; i < nums.size(); i++) {
+            Collections.swap(nums, i, index);
+            dfs(nums, index + 1, res);
+            Collections.swap(nums, i, index);
+        }
+    }
+}
