@@ -1,0 +1,44 @@
+/*
+how to compare 2 island are same?
+1. do dfs from top-left node, compare the whether their 4 direction has the same value, 
+return false if not equal, true when 4 dirs are the same
+
+2. Use a hashSet to store all shapes, same shape will only be stored once
+*/
+class Solution {
+    int[][] grid;
+    boolean[][] visited;
+    Set<Set<Integer>> shapes;
+    Set<Integer> shape;
+    int[][] dirs= new int[][]{{1,0},{0,1},{-1,0},{0,-1}};
+    public int numDistinctIslands(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        this.grid = grid;
+        shapes = new HashSet<>();
+        visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                shape = new HashSet<>();
+                findShape(i, j, i, j);
+                if (!shape.isEmpty()) {
+                    shapes.add(shape);
+                }
+            }
+        }
+        return shapes.size();
+    }
+    public void findShape(int r, int c, int r0, int c0) {
+        // base case
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length ||
+            grid[r][c] == 0 || visited[r][c]) {
+            return;
+        }
+        visited[r][c] = true;
+        shape.add((r - r0) * 2 * grid[0].length + (c - c0)); 
+        for (int[] d : dir) {
+            findShape(r + d[0], c + d[1], r0, c0)
+        }
+    }
+}
