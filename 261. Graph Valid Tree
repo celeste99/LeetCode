@@ -26,16 +26,17 @@ class Solution {
             graph.get(edge[1]).add(edge[0]);
         }
         Set<Integer> visited = new HashSet<>(); // used for checking connected graph and checking cycle
-        return !dfs(graph, 0, null, visited) && (visited.size() == n);
+        return !dfs(graph, 0, visited) && (visited.size() == n);
     }
-    private boolean dfs(Map<Integer, Set<Integer>> graph, int node, Integer parent, Set<Integer> visited) {
+    private boolean dfs(Map<Integer, Set<Integer>> graph, int node, Set<Integer> visited) {
         // base case
         if (visited.contains(node)) { // has cycle
             return true; // only way of return true
         }        
         visited.add(node); // mark the # of node can be reached from root    
         for (int nei : graph.get(node)) {
-            if (nei != parent && dfs(graph, nei, node, visited)) {
+            graph.get(nei).remove(node); // 回去找妈不算cycle, 杜绝回去找妈的可能; 找奶奶才算cycle
+            if (dfs(graph, nei, visited)) {
                 return true;
             }
         }
