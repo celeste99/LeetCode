@@ -2,10 +2,10 @@
 We can use backtracking to find all the possible combinations, on each level, we decide to add '(' or ')' to 
 cur sol, after we added 2*n times, we will check if its a valid soluton, and put the valid one into our res.
 
-But actually we can do an optimization by adding several restrictions when calling the recursion function.
+But actually we can do an optimization by adding several restrictions before calling the recursion function.
 That is:
 1. when adding '(', # of '('  > 0
-2. when adding ')', # of ')' <= '('
+2. when adding ')', # of ')' used < # of '(' used
 otherwise, not valid, we do not do recursion further
 */
 class Solution {
