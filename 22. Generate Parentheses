@@ -1,0 +1,40 @@
+/*
+We can use backtracking to find all the possible combinations, on each level, we decide to add '(' or ')' to 
+cur sol, after we added 2*n times, we will check if its a valid soluton, and put the valid one into our res.
+
+But actually we can do an optimization by adding several restrictions when calling the recursion function.
+That is:
+1. when adding '(', # of '('  > 0
+2. when adding ')', # of ')' <= '('
+otherwise, not valid, we do not do recursion further
+*/
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        if (n == 0) {
+            return res;
+        }
+        StringBuilder sb = new StringBuilder();
+        dfs(n, n, sb, res);
+        return res;
+    }
+    private void dfs(int lRemain, int rRemain, StringBuilder sb, List<String> res) {
+        // base case
+        if (lRemain == 0 && rRemain == 0) {
+            res.add(new String(sb));
+            return;
+        }
+        // add '('
+        if (lRemain > 0) {
+            sb.append('(');
+            dfs(lRemain - 1, rRemain, sb, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }   
+        // add ')'
+        if (rRemain > lRemain) {
+            sb.append(')');
+            dfs(lRemain, rRemain - 1, sb, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
