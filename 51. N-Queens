@@ -1,0 +1,48 @@
+/*
+1. no conflict on colunmn - Set1
+2. no conflict on diagonal - leftDiagonal/rDiagonal intersect # with y coordinates
+leftDiagonal: y - i  Set2
+rDiagonal: y + i     Set3
+
+*/
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set2 = new HashSet<>();
+        Set<Integer> set3 = new HashSet<>();
+        
+        List<List<String>> res = new ArrayList<>();
+        List<String> sol = new ArrayList<>();
+        char[] line = new char[n];
+        for (int i = 0; i < n; i++) {
+            line[i] = '.';
+        }
+        
+        dfs(n, 0, set1, set2, set3, line, sol, res);
+        return res;
+    }
+    private void dfs(int n, int row, Set<Integer> set1, Set<Integer> set2, Set<Integer> set3, 
+                    char[] line, List<String> sol, List<List<String>> res) {
+        // base case
+        if (row == n) {
+            res.add(new ArrayList<>(sol));
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (!set1.contains(i) && !set2.contains(row - i) && !set3.contains(row + i)) {
+                set1.add(i);
+                set2.add(row - i);
+                set3.add(row + i);
+                line[i] = 'Q';
+                sol.add(new String(line));
+                line[i] = '.';
+                dfs(n, row + 1, set1, set2, set3, line, sol, res);
+                // recover
+                set1.remove(i);
+                set2.remove(row - i);
+                set3.remove(row + i);
+                sol.remove(sol.size() - 1);
+            }
+        }
+    }
+}
