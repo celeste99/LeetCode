@@ -2,7 +2,7 @@
 we should use an set to store all the swaped element in this level, 
 avoid swaping duplicate element in the same position
 */
-
+// must use hashset other than comparing neibor value, cuz swap will make it unsorted!
 class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
