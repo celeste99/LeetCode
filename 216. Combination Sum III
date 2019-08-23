@@ -1,0 +1,22 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        dfs(k, n, 1, new ArrayList<Integer>(), res);
+        return res;
+    }
+    public void dfs(int k, int n, int start, List<Integer> sol, List<List<Integer>> res) {
+        // base case
+        if (sol.size() == k && n == 0) {
+            res.add(new ArrayList<>(sol));
+            return;
+        }
+        if (sol.size() == k || n < 0) {
+            return; // early return pruning
+        }
+        for (int i = start; i <= 9; i++) {
+            sol.add(i);
+            dfs(k, n - i, i + 1, sol, res);
+            sol.remove(sol.size() - 1);
+        }
+    }
+}
