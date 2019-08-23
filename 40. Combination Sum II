@@ -12,7 +12,7 @@ class Solution {
             res.add(new ArrayList<>(sol));
             return;
         }             
-        if (index == candidates.length) {
+        if (curSum > target || index == candidates.length) {
             return;
         }
         
