@@ -1,0 +1,36 @@
+class Solution {
+    public int[] findRightInterval(int[][] intervals) {
+        int[] res = new int[intervals.length];
+        
+        // Start point -> interval index
+        Map<Integer, Integer> map = new HashMap<>(); 
+        // get a collection of sorted start point
+        int[] start = new int[intervals.length];
+        for (int i = 0; i < intervals.length; i++) {
+            start[i] = intervals[i][0];
+            map.put(intervals[i][0], i);
+        }
+        Arrays.sort(start);
+        
+        // for each interval other start point >= this end point
+        for (int i = 0; i < intervals.length; i++) {
+            int value = findLargerOrEqual(start, intervals[i][1], 0, start.length - 1);
+            res[i] = (value >= intervals[i][1]) ? map.getOrDefault(value, -1) : -1;
+        }
+        return res;
+    }
+    
+    public int findLargerOrEqual(int[] array, int target, int left, int right) {
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (array[mid] == target) {
+                return array[mid];
+            } else if (array[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return array[left] >= target ? array[left] : -1;
+    }
+}

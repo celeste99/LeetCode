@@ -1,36 +1,39 @@
+/*
+1. If asks for show all the element, we should use each level to choose one from candidates pool
+2. if askes for # each element used, we should try all possible # of each element in its level
+*/
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<int[]> res = new ArrayList<>();
-        int[] sol = new int[candidates.length];
-        dfs(candidates, 0, target, sol, res);
+        List<List<Integer>> res = new ArrayList<>();
+        dfs(candidates, candidates.length - 1, target, new LinkedList<Integer>(), res);
         
-        List<List<Integer>> com = new ArrayList<>();
-        for (int[] r : res) {
+        List<List<Integer>> combination = new ArrayList<>();
+        for (List<Integer> r : res) {
             List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < r.length; i++) {
-                while (r[i] > 0) {
+            for (int i = 0; i < r.size(); i++) {
+                for (int j = 0; j < r.get(i); j++) {
                     list.add(candidates[i]);
-                    r[i]--;
                 }
             }
-            com.add(list);
+            combination.add(list);
         }
-        return com;
+        return combination;
     }
-    private void dfs(int[] candidates, int index, int target, 
-                     int[] sol, List<int[]> res) {
+    private void dfs(int[] candidates, int index, int target, LinkedList<Integer> sol, List<List<Integer>> res) {
         // base case
         if (index == 0) {
             if (target % candidates[index] == 0) {
-                sol[index] = target / candidates[index];
-                res.add(sol);
+                sol.addFirst(target / candidates[index]); 
+                res.add(new LinkedList<Integer>(sol));
+                sol.remove(0);
             }
             return;
         }
         
-        for (int i = 0; i <= target / candidates[index]; i++) {
-            sol[index] = i;
+        for (int i = 0; i <= (int)(target / candidates[index]); i++) { // 对应的数可以有几个
+            sol.addFirst(i);
             dfs(candidates, index - 1, target - candidates[index] * i, sol, res);
+            sol.remove(0);
         }
     }
 }
