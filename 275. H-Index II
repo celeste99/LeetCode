@@ -1,0 +1,39 @@
+
+class Solution {
+    public int hIndex(int[] citations) {        
+        int left = 0, right = citations.length, n = right;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (citations[mid] == n - mid) { 
+                // c[mid - 1] <= n - mid < n - mid + 1
+                return n - mid;
+            } else if (citations[mid] > n - mid) {
+                // c[mid + 1] > n - mid > n - mid - 1
+                // search left
+                right = mid;
+            } else { 
+                // c[mid] < n - mid -> c[mid - 1] < n - mid < n - mid + 1
+                // search right
+                left = mid + 1;
+            }
+        }
+        // 一定存在 index i，使得 c[i] >= n - i
+        return n - left;
+    }
+}
+
+
+
+class Solution {
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        for (int i = 0; i < n; i++) {
+            if (citations[i] >= n - i) { // citation[i-1] < n - i + 1 <= n - i
+                return n - i;
+            } 
+        }
+        return 0;
+    }
+}
+
+
