@@ -1,0 +1,32 @@
+class Solution {
+    public List<String> letterCasePermutation(String S) {
+        List<String> res = new ArrayList<>();
+        if (S == null || S.length() == 0) {
+            return res;
+        }
+        StringBuilder sb = new StringBuilder();
+        dfs(S, 0, sb, res);
+        return res;
+    }
+    public void dfs(String s, int index, StringBuilder sb, List<String> res) {
+        // base case
+        if (index == s.length()) {
+            res.add(new String(sb));
+            return;
+        }
+        char ch = s.charAt(index);
+        // 1. didn't change anything whether letter or digit
+        sb.append(ch);
+        dfs(s, index + 1, sb, res);
+        sb.deleteCharAt(sb.length() - 1);
+        if (ch > '9') { // 2. not digit, we need to change letter case
+            if (ch >= 'a') { // lower case to uppercase                
+                sb.append((char)(ch - 32));
+            } else { // uppercase to lowercase
+                sb.append((char)(ch + 32));
+            }
+            dfs(s, index + 1, sb, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
