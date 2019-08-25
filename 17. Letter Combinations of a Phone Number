@@ -1,0 +1,27 @@
+class Solution {
+    String[] map = new String[] {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList<>();
+        if (digits == null || digits.length() == 0) {
+            return res;
+        }
+        
+        dfs(digits, 0, map, new StringBuilder(), res);
+        return res;
+    }
+    
+    private void dfs(String digits, int index, String[] map, StringBuilder sb, List<String> res) {
+        // base case
+        if (index == digits.length()) {
+            res.add(new String(sb));
+            return;
+        }
+        int num = digits.charAt(index) - '0';
+        for (int i = 0; i < map[num].length(); i++) {
+            sb.append(map[num].charAt(i));
+            dfs(digits, index + 1, map, sb, res);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
