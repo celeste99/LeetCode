@@ -1,0 +1,65 @@
+class Solution {
+    public List<String> generatePalindromes(String s) {
+        List<String> res = new ArrayList<>();
+        
+        // 1. check if there exist palindrome
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+        int oddNum = 0;
+        Character odd = null; 
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            if (entry.getValue() % 2 == 1) {
+                if (oddNum == 1) {
+                    return res;
+                }
+                oddNum++;
+                odd = entry.getKey();
+            }            
+        }
+        
+        // 2. generate a half char[] contains all the left half elements
+        // except for the mid one if s is odd 
+        char[] half = new char[s.length() / 2];
+        int i = 0;
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            for (int j = 0; j < (entry.getValue() / 2); j++) {
+                half[i++] = entry.getKey();
+            }
+        }
+        // 3. find all permutations for the left half and add the right half at end
+        dfs(half, 0, res, odd);
+        return res;
+    }
+    private void dfs(char[] half, int index, List<String> res, Character odd) {
+        // base case
+        if (index == half.length) {
+            String st = new String(half);
+            if (odd != null) {
+                st = st + odd.toString();
+            }
+
+            StringBuilder sb = new StringBuilder(new String(half));
+            st = st + sb.reverse().toString();
+            res.add(st);
+            return;
+        }
+        HashSet<Character> set = new HashSet<>();   // 0123
+        for (int i = index; i < half.length; i++) { // aabb
+            if (!set.contains(half[i])) {
+                swap(half, index, i);
+                dfs(half, index + 1, res, odd);
+                swap(half, index, i);
+                set.add(half[i]);
+            }
+        }
+    }
+    private void swap(char[] a, int l, int r) {
+        char tmp = a[l];
+        a[l] = a[r];
+        a[r] = tmp;
+    }
+}
+
