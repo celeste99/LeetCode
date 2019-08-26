@@ -1,27 +1,21 @@
 // Map<letter, String>
 class Solution {
     public boolean wordPattern(String pattern, String str) {
-        // corner case
-        if (pattern == null || str == null) {
-            return pattern == null && str == null;
+        String[] words = str.split(" ");
+        if (pattern.length() != words.length) {
+            return false;
         }
-        String[] s = str.split(" ");
-        if (pattern.length() != s.length) return false;
         
-        Map<Character, String> map = new HashMap<>();
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i < s.length; i++) {
-            char c = pattern.charAt(i); // get letter            
-            String tmp = map.get(c); // get String
-            if (tmp == null) {
-                if (set.contains(s[i])) {
-                    return false;
-                }
-                map.put(c, s[i]);
-                set.add(s[i]);
-            } else if (!tmp.equals(s[i])) {
+        Map<Character, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        
+        for (int i = 0; i < pattern.length(); i++) {
+            char letter = pattern.charAt(i); // get letter            
+            String word = words[i]; // get word
+            
+            if (map1.put(letter, i) != map2.put(word, i)) {
                 return false;
-            }            
+            }
         }
         return true;
     }

@@ -5,19 +5,19 @@ class Solution {
         dfs(candidates, 0, target, new ArrayList<Integer>(), res);
         return res;
     }
-    public void dfs(int[] candidates, int index, int target, List<Integer> sol, 
+    public void dfs(int[] candidates, int start, int target, List<Integer> sol, 
                     List<List<Integer>> res) {
         // base case
         if (target == 0) {
             res.add(new ArrayList<>(sol));
             return;
         }             
-        if (target < 0 || index == candidates.length) {
+        if (target < 0 || start == candidates.length) {
             return;
         }
         
-        for (int i = index; i < candidates.length; i++) {
-            if (i == index || candidates[i] != candidates[i - 1]) {
+        for (int i = start; i < candidates.length; i++) {
+            if (i == start || candidates[i] != candidates[i - 1]) {
                 sol.add(candidates[i]);
                 dfs(candidates, i + 1, target - candidates[i], sol, res);
                 sol.remove(sol.size() - 1);

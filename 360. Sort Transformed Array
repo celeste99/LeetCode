@@ -1,0 +1,29 @@
+/*
+a > 0: 开口向上 -》 the outside 2 number are always bigger/equal than center
+a < 0: 开口向下 -》center is bigger than 2 ends
+b的值不会影响f(x)的单调性
+*/
+class Solution {
+    public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        int n = nums.length;
+        int[] res = new int[n];
+        
+        int i = 0;
+        int j = n - 1;
+        int k = a >= 0 ? n - 1 : 0;
+        
+        while (i <= j) {
+            if (a >= 0) {
+                res[k--] = quad(nums[i], a, b, c) >= quad(nums[j], a, b, c) ? 
+                    quad(nums[i++], a, b, c) : quad(nums[j--], a, b, c);
+            } else {
+                res[k++] = quad(nums[i], a, b, c) <= quad(nums[j], a, b, c) ? 
+                    quad(nums[i++], a, b, c) : quad(nums[j--], a, b, c);
+            }
+        }
+        return res;
+    }
+    public int quad (int x, int a, int b, int c) {
+        return a * x * x + b * x + c;
+    }
+}
