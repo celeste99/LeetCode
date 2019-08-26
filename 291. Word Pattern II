@@ -1,0 +1,44 @@
+class Solution {
+    public boolean wordPatternMatch(String pattern, String str) {
+        Map<Character, String> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        
+        return dfs(pattern, 0, str, 0, map, set);
+    }
+    
+    public boolean dfs(String pattern, int i, String str, int j, Map<Character, String> map, Set<String> set) {
+        // base case
+        if (pattern.length() == i && str.length() == j) return true;
+        if (pattern.length() == i || str.length() == j) return false;
+        
+        char c = pattern.charAt(i);
+        
+        // 1. map have c, we just need to check
+        if (map.containsKey(c)) {
+            String w = map.get(c);
+            
+            if (!str.startsWith(w, j)) {
+                return false;
+            }
+            
+            return dfs(pattern, i + 1, str, j + w.length(), map, set);
+        }
+        // 2. map didn't have c, we need to try all possibility
+        for (int k = j + 1; k <= str.length(); k++) {
+            String s = str.substring(j, k);
+            
+            if (set.contains(s)) continue;
+            
+            map.put(c, s);
+            set.add(s);
+            
+            boolean tmp = dfs(pattern, i + 1, str, k, map, set);
+            
+            map.remove(c, s);
+            set.remove(s);
+            
+            if (tmp) return true;
+        }
+        return false;
+    }
+}
