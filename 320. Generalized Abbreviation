@@ -1,0 +1,28 @@
+class Solution {
+    public List<String> generateAbbreviations(String word) {
+        List<String> res = new ArrayList<>();
+        dfs(word, 0, false, new StringBuilder(), res);
+        return res;
+    }
+    public void dfs(String word, int index, boolean prevIsNum, StringBuilder sb, List<String> res) {
+        // base case
+        if (index == word.length()) {
+            res.add(new String(sb));
+            return;
+        }
+        
+        if (!prevIsNum) {
+            // try to put all the possible number
+            for (Integer i = 1; i <= (word.length() - index); i++) {
+                String num = i.toString();
+                sb.append(num);
+                dfs(word, index + i, true, sb, res); 
+                sb.delete(sb.length() - num.length(), sb.length());
+            }
+        }
+        // put character in index
+        sb.append(word.charAt(index));
+        dfs(word, index + 1, false, sb, res);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+}
