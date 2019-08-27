@@ -1,0 +1,30 @@
+/*
+Solution 1:
+1. find nearest element to x in the array - O(logn)
+2. use 2 pinters to exapnd the array, find k closest elements - O(k)
+3. build the res
+
+Solution 2:
+1. Assume we have a sliding window of size k, we need to adjust the window position to 
+make sure it includes all the k closest elements
+2. do a binary search to find the correct postion of leftBound of this sliding window
+*/
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        // search for the leftBound element leftBound
+        int start = 0, end = arr.length - k;
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+            if (x - arr[mid] > arr[mid + k] - x) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+        for (int i = start; i < start + k; i++) {
+            res.add(arr[i]);
+        }
+        return res;
+    }
+}
