@@ -1,3 +1,17 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {}
+
+    public Node(int _val,List<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
 // dfs + mark visited 保证所有 node 只 visit 一次
 // postOrder保证所有newNeis都创建出来了
 // time: O(|V|+|E|)  space: O(|V|)
