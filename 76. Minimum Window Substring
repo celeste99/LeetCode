@@ -1,0 +1,44 @@
+class Solution {
+    public String minWindow(String s, String t) {
+        if (s == null || t == null || s.length() < t.length()) {
+            return "";
+        }
+        
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        
+        int slow = 0, fast = 0, start = 0, end = -1;
+        int size = Integer.MAX_VALUE;
+        int match = 0;
+        for (; fast < s.length(); fast++) {
+            char tmp = s.charAt(fast);
+            if (map.containsKey(tmp)) {
+                int count = map.get(tmp);
+                map.put(tmp, count - 1);
+                if (count == 1) {
+                    match++;
+                }
+            }
+            while (match == map.size()) {
+                if (fast - slow + 1 < size) {
+                    size = fast - slow + 1;
+                    end = fast;
+                    start = slow;
+                }
+                tmp = s.charAt(slow);
+                if (map.containsKey(tmp)) {
+                    int count = map.get(tmp);
+                    map.put(tmp, count + 1);
+                    if (count == 0) {
+                        match--;
+                    }
+                }
+                slow++;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+}
