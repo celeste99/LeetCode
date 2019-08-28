@@ -1,9 +1,6 @@
 /*
-相当于快慢指针环的问题
-2 5 9 6 9 3 8 9 7 1
-0 1 2 3 4 5 6 7 8 9
-      s
-  f
+相当于快慢指针找环的问题
+每个value是一个node，node.next是nums[value]
 */
 class Solution {
     public int findDuplicate(int[] nums) {
@@ -12,14 +9,14 @@ class Solution {
         }
         
         int slow = nums[0];
-        int fast = nums[nums[0]];
+        int fast = nums[0];
         
-        while (slow != fast) {
+        do {
             slow = nums[slow];
             fast = nums[nums[fast]];
-        }
+        } while (slow != fast);
         
-        slow = 0;
+        slow = nums[0];
         while (slow != fast) {
             slow = nums[slow];
             fast = nums[fast];
