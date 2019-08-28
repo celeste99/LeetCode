@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int height = 1;
+        TreeNode left = root.left, right = root.right;
+        while (left != null && right != null) { // check if root is a perfect tree
+            height++;
+            left = left.left;
+            right = right.right;
+        }
+        // perfect -> calculate nodes
+        // non perfect -> divide tree into 2 parts (one part must be perfect)
+        return left == right ? (1 << height) - 1 : 1 + countNodes(root.left) + countNodes(root.right);
+    }
+}
+// O(logn ^ 2) time -> 
+// O(log n) space
