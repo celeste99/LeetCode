@@ -1,0 +1,40 @@
+// 这类题目都要maintain2个limit用来方便做4个边的index:start/end
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        if (n < 2) return;
+        
+        int start = 0, end = n - 1;        
+        while (start < end) {
+            for (int k = 0; k < (end - start); k++) { // moved k steps from [i,i]
+                int tmp = matrix[start][start + k];
+                matrix[start][start + k] = matrix[end - k][start];
+                matrix[end - k][start] = matrix[end][end - k];
+                matrix[end][end - k] = matrix[start + k][end];
+                matrix[start + k][end] = tmp;
+            }
+            start++;
+            end--;
+        }
+        return;
+    }
+}
+
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        if (matrix == null || matrix.length < 2) return;
+        
+        int n = matrix.length;
+        for (int i = 0; i < n / 2; i++) { // start at [i, i]
+            for (int j = i; j < n - i - 1; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[n - j - 1][i];
+                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+                matrix[j][n - i - 1] = tmp;
+            }
+        }
+        return;
+    }
+}

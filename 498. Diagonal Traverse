@@ -1,0 +1,39 @@
+/*
+1. determine the direction: each diagonal has a direction, and can be distingushed by the sum is even or odd
+2. determine the next stop
+deal with edge cases
+*/
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix.length == 0) {
+            return new int[0];
+        }
+        int i = 0, j = 0, m = matrix.length, n = matrix[0].length;
+        int[] res = new int[m * n];
+        boolean dir = false;
+        for (int k = 0; k < res.length; k++) {
+            res[k] = matrix[i][j];
+            if ((i + j) % 2 == 0) { // we are moving up
+                if (j == n - 1) { // met right border
+                    i++;
+                } else if (i == 0) { // met top border
+                    j++;
+                } else {
+                    i--;
+                    j++;
+                }
+            } else { // moving down
+                if (i == m - 1) { // met bottom border
+                    j++;
+                } else if (j == 0) { // met left border
+                    i++;
+                } else {
+                    i++;
+                    j--;
+                }
+            }
+            
+        }
+        return res;
+    }
+}
