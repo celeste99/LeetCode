@@ -1,0 +1,44 @@
+/*
+1. sort first, pick one, do 3sum
+Time: O(n^3) 
+Space: O(1)
+
+2. use a map to store all pair sum: <pairSum, <<i1,j1>,<i2,j2>,<i3,j3>>>
+Time: O(n^3) worst
+Space:O(#pairSum) = O(n^2)
+
+3. use a map to store only the left-most pair: <pairSum, <i1, i2>> 
+this solution only suitable when we return boolean
+*/
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        if (nums == null || nums.length < 4) {
+            return new ArrayList<List<Integer>>();
+        }
+        Arrays.sort(nums); // to avoid same duplicate combination
+        Set<List<Integer>> res = new HashSet<>();
+        Map<Integer, Set<List<Integer>>> map = new HashMap<>();
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                int pairSum = nums[i] + nums[j];
+                // 1. find possible solution: pair is null means no solution
+                Set<List<Integer>> pairs = map.get(target - pairSum);
+                if (pairs != null) {
+                    for (List<Integer> p : pairs) {
+                        List<Integer> quad = Arrays.asList(nums[i], nums[j], p.get(0), p.get(1));
+                        quad.sort();
+                        res.add(quad.sort());
+                    }
+                }
+                // 2. put cur pairSum into map
+                Set<List<Integer>> curPair = map.get(pairSum);
+                if (curPair == null) {
+                    curPair = new HashSet<>();
+                    map.put(pairSum, curPair);
+                }
+                curPair.add(Arrays.asList(nums[i], nums[j]));
+            }
+        }
+      return new ArrayList(res);  
+    }
+}
