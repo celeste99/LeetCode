@@ -1,0 +1,44 @@
+/*
+we can divide our step by each round
+we can use 4 index(top/bottom/left/right) to indicate the elements we are traversing in this round
+the base case is that we have nothing left or we have a row or a column left
+ans after we traverse all the elements in the matrix, we can return the res
+*/
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return res;
+        }
+        // we need the 4 index to show the top-left and bottom-right element in each round
+        int top = 0, left = 0, right = matrix[0].length - 1, bottom = matrix.length - 1;
+        while (top < bottom && left < right) {
+            for (int i = left; i < right; i++) {
+                res.add(matrix[top][i]);
+            }
+            for (int i = top; i < bottom; i++) {
+                res.add(matrix[i][right]);
+            }
+            for (int i = right; i > left; i--) {
+                res.add(matrix[bottom][i]);
+            }
+            for (int i = bottom; i > top; i--) {
+                res.add(matrix[i][left]);
+            }
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        if (left == right) {
+            for (int i = top; i <= bottom; i++) {
+                res.add(matrix[i][left]);
+            }
+        } else if (top == bottom) {
+            for (int i = left; i <= right; i++) {
+                res.add(matrix[top][i]);
+            }
+        }
+        return res;
+    }
+}

@@ -1,0 +1,66 @@
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+        if (n == 0) {
+            return matrix;
+        }
+        // use start/end to represent the top-left/bottom-right elment at each round
+        int start = 0, end = n - 1, val = 1;
+        while (start < end) {
+            for (int i = start; i < end; i++) {
+                matrix[start][i] = val++;
+            }
+            for (int i = start; i < end; i++) {
+                matrix[i][end] = val++;
+            }
+            for (int i = end; i > start; i--) {
+                matrix[end][i] = val++;
+            }
+            for (int i = end; i > start; i--) {
+                matrix[i][start] = val++;
+            }
+            start++;
+            end--;
+        }
+        if (start == end) {
+            matrix[start][end] = val;
+        }
+        return matrix;
+    }
+}
+
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+        if (n == 0) {
+            return matrix;
+        }
+        
+        int value = 1, i = 0, j = 0, start = 0;
+        
+        for (; start < n / 2; start++) {            
+            i = start;
+            for (j = start; j < n - start - 1; j++) {
+                matrix[i][j] = value++;
+            }            
+            // j = n - start - 1;
+            for (; i < n - start - 1; i++) {
+                matrix[i][j] = value++;
+            }           
+            // i = m - start - 1;
+            for (; j > start; j--) {
+                matrix[i][j] = value++;
+            }  
+            // j = start
+            for (; i > start; i--) {
+                matrix[i][j] = value++;
+            }
+        }
+        if (n % 2 == 1) {
+            matrix[start][start] = value;
+        } 
+        return matrix;
+    }
+}
