@@ -1,6 +1,10 @@
-// 1. for-for loop time:O(n^2) space:O(1)
-// 2. use map, scan once time:O(n) space:O(n)
-// 3. sort it, use 2 pointers time:O(n^2) space:O(1)
+/*
+1. for-for loop time:O(n^2) space:O(1)
+2. use map, scan once time:O(n) space:O(n)
+k == 0, use a map to find the # of value which have occurence >= 2 
+k != 0, 一个set, linear scan，一边放一边查
+3. sort it, use 2 pointers time:O(n^2) space:O(1)
+*/
 class Solution {
     public int findPairs(int[] nums, int k) {
         Arrays.sort(nums);
