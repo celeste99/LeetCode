@@ -1,0 +1,18 @@
+// 只有left和right都为null的节点才是leaf节点
+// the base case is either leaf node or null
+class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return false;
+        }
+        // left/right both null, return sum == 0
+        if (root.left == null && root.right == null) {
+            return root.val == sum;
+        }
+        // only left null, return helper(left)
+        // only right null, return helper(right)
+        // both != null, return helper(left) || helper(right)
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+    
+}
