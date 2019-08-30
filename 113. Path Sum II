@@ -1,0 +1,32 @@
+// use backtracking to find all path from root to any leaf node
+// compared to 112, the traversing steps are the same, but we need to main a up-down path
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> paths = new ArrayList<>();
+        if (root == null) {
+            return paths;
+        }
+        helper(root, sum, new ArrayList<Integer>(), paths);
+        return paths;
+    }
+    private void helper(TreeNode root, int sum, List<Integer> path, List<List<Integer>> paths) {
+        // handle 2 base cases: null or leaf node
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null) {
+            if (root.val == sum) {
+                path.add(root.val);
+                paths.add(new ArrayList(path));
+                path.remove(path.size() - 1);
+            }
+            return;
+        }
+        
+        path.add(root.val);
+        helper(root.left, sum - root.val, path, paths);
+        helper(root.right, sum - root.val, path, paths);
+        path.remove(path.size() - 1);
+        
+    }
+}
