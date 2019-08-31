@@ -12,6 +12,36 @@ this solution only suitable when we return boolean
 */
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int p1 = 0; p1 < nums.length - 3; p1++) {
+            // dedup - 确保same value appear once in first pos
+            if (p1 != 0 && nums[p1] == nums[p1 - 1] || 
+                nums[p1] + 3 * nums[nums.length - 1] < target) continue; 
+            for (int p2 = p1 + 1; p2 < nums.length - 2; p2++) {
+                if (p2 != p1 + 1 && nums[p2] == nums[p2 - 1] || 
+                   nums[p1] + nums[p2] + 2 * nums[nums.length - 1] < target) continue; // dedup
+                int p3 = p2 + 1, p4 = nums.length - 1;
+                while (p3 < p4) {
+                    int sum = nums[p1] + nums[p2] + nums[p3] + nums[p4];
+                    if (p4 != nums.length - 1 && nums[p4] == nums[p4 + 1] || sum > target) {
+                        p4--;
+                    } else if (p3 != p2 + 1 && nums[p3] == nums[p3 - 1] || sum < target) {
+                        p3++;
+                    } else {
+                        res.add(Arrays.asList(nums[p1], nums[p2], nums[p3], nums[p4]));
+                        p3++;
+                        p4--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
         if (nums == null || nums.length < 4) {
             return new ArrayList<List<Integer>>();
         }
