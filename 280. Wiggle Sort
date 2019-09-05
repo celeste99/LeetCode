@@ -1,0 +1,25 @@
+/*
+3 5 1 6 2 4
+        i
+1. even: less than next
+this is what we want: a[i-1] >= a[i] <= a[i+1]
+a[i-1] >= a[i] > a[i+1] 
+
+swap a[i] and a[i+1] will not affect previous result because a[i+1]<a[i]<=a[i-1]
+
+2. odd: larger than next
+
+*/
+
+class Solution {
+    public void wiggleSort(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if ((i % 2 == 0) == (nums[i] > nums[i + 1])) {
+                int tmp = nums[i];
+                nums[i] = nums[i + 1];
+                nums[i + 1] = tmp;
+            }
+        }
+        return;
+    }
+}
