@@ -1,0 +1,35 @@
+/*
+Solution 1
+water[i] = min(left_max, right_max) - level[i]
+Time: O(n^2)   dupliacte calculation
+ --> optimize!!!!!
+Space: O(1)
+
+Solution 2
+dp
+
+Solution 3:
+2 pointers
+*/
+class Solution {
+    public int trap(int[] height) {
+        if (height.length == 0) {
+            return 0;
+        }
+        int left = 0, right = height.length - 1;
+        int water = 0;
+        int leftMax = height[left], rightMax = height[right];
+        while (left <= right) {
+            leftMax = Math.max(leftMax, height[left]);
+            rightMax = Math.max(rightMax, height[right]);
+            if (leftMax <= rightMax) {
+                water += leftMax - height[left];
+                left++;
+            } else {
+                water += rightMax - height[right];
+                right--;
+            }
+        }
+        return water;
+    }
+}

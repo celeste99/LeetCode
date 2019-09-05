@@ -1,0 +1,22 @@
+/*
+we can linear scan the array from left to right, and maintain a min value and second min value while scaning the array
+similar to the "Longest increasing subsequence"
+dp[i] represents the minimum (i - 1)-th value for sebsequence with length i
+instead in this question, we have a dp[] size of 2
+*/
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int sizeOne = Integer.MAX_VALUE; // the min value when length is 1
+        int sizeTwo = Integer.MAX_VALUE; // the min sec value when length is 2
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= sizeOne) {
+                sizeOne = nums[i];
+            } else if (nums[i] <= sizeTwo) {
+                sizeTwo = nums[i];
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+}
