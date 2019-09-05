@@ -1,0 +1,21 @@
+// sum[index] % k 相同的两个index 中间的和等于k的倍数
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int sum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (k != 0) {
+                sum = sum % k;
+            }
+            Integer tmp = map.get(sum);
+            if (tmp == null) {
+                map.put(sum, i);
+            } else if (i - tmp >= 2){
+                return true;
+            }
+        }
+        return false;
+    }
+}
