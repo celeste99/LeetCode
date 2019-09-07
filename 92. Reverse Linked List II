@@ -1,0 +1,30 @@
+/* 1. remember m-1, m, n, n-1 ListNode
+   2. reverse [m, n] as the easy prob
+   3. post-processing to connect the reversed part
+*/
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode one = dummy, two = null, three = null, four = null, prev = dummy;
+        
+        for (int i = 1; i <= n; i++) {
+            ListNode next = head.next;
+            if (i == m - 1) {
+                one = head;
+            } else if (i >= m && i <= n) {
+                if (i == m) {
+                    two = head;
+                }
+                head.next = prev;                
+            }
+            prev = head;
+            head = next;
+        }
+        
+        one.next = prev;
+        two.next = head;
+        return dummy.next;
+    }
+}
