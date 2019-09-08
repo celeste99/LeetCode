@@ -1,0 +1,25 @@
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode prev = dummy;
+        
+        while (head != null && head.next != null) { // termination condition: 不剩/剩一个
+    
+            if (head.val != head.next.val) { // 1. no needs to modify the list
+                prev = prev.next;
+                head = head.next;
+            } else {                         // 2. skip duplicate nodes
+                // next指向新val的头一个/next指向null，都可以结束空转
+                while (head.next != null && head.val == head.next.val) {
+                    head = head.next;
+                }           
+                prev.next = head.next;
+                head = head.next;
+            } 
+            
+        }        
+        return dummy.next;
+    }
+}

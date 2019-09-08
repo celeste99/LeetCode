@@ -1,0 +1,28 @@
+/*
+matain two pointers, fast and slow where fast is always n step ahead slow, when fast meet
+the end node in the list, we find the n-th node from end
+
+Assume n <= the length of linkedList
+*/
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode fast = dummy, slow = dummy;
+        for (int i = 1; i <= n; i++) {
+            fast = fast.next;
+        }
+        
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        
+        ListNode tmp = slow.next;
+        slow.next = tmp.next;
+        tmp.next = null;
+        
+        return dummy.next;
+    }
+}
