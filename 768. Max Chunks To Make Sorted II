@@ -2,8 +2,8 @@
 we can split it in index i --> when all the elment to the left of index i are exactly the same as 
 the left elements of index i (both value and number) in the sorted array
 
-From the property of the sorted array, we can get that the largest value in left side is <= minimum value in the right side --> same property is applied to the original array
-
+From the property of the sorted array, we can get that the largest value in left side is <= minimum value in the right side 
+--> same property is applied to the original array
 --> we get a chuck when leftMax[i] <= rightMin[i + 1]
 
 use a extra array to store rightMin, a value for leftMax, scan the whole array from left to right, 

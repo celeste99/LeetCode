@@ -1,0 +1,24 @@
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode dummy = new ListNode(0); // in case k == 0
+        dummy.next = head;
+        ListNode fast = dummy, slow = dummy;
+        
+        int l = 0;
+        for (; fast.next != null; l++) { // 1. get the total length
+            fast = fast.next;       // 2. find the tail
+        }
+        
+        for (int j = l - k % l; j > 0; j--) {
+            slow = slow.next; // 3. find new tail and new head
+        }
+        
+        fast.next = head; // 4. close the list into a ring
+        dummy.next = slow.next; // 5. break the list at new tail and new head
+        slow.next = null;
+        
+        return dummy.next;
+    }
+}

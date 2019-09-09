@@ -1,7 +1,7 @@
 class Solution {
     public int firstMissingPositive(int[] nums) {
         // put all the elements to its right position nums[i] = i + 1
-        // skip the rest
+        // skip the rest, we don't care what is put in i, we just care wether nums[i] == i + 1
         int i = 0, n = nums.length;
         while (i < n) {
             if (nums[i] == i + 1 || nums[i] <= 0 || nums[i] > n 

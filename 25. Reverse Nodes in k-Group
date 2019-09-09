@@ -1,0 +1,33 @@
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        int sum = 0;
+        ListNode cur = head;
+        while (cur != null) { // 1. calculate the number of nodes in the LinkedList
+            sum++;
+            cur = cur.next;
+        }
+        
+        // 2. decide when to stop
+        int sec = sum / k;
+        
+        // 3. reverse each section
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy, two = dummy;
+        
+        for (;sec > 0; sec--) {
+            ListNode one = two; // one represent tail node in previous section
+            two = head; // two represent head node in cur section
+            for (int i = 1; i <= k; i++) {
+                ListNode next = head.next;
+                head.next = prev;
+                prev = head;
+                head = next;
+            }
+            one.next = prev;  // let the new head in this section connected with tail in prevoius section
+            two.next = head;  // connect to next section's old head
+        }
+       
+        return dummy.next;
+    }
+}
