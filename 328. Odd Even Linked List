@@ -1,0 +1,21 @@
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+      ListNode odd = new ListNode(0), even = new ListNode(0);
+        ListNode curO = odd, curE = even;
+        for (int i = 1; head != null; i++) {
+            if (i % 2 == 1) {
+                curO.next = head;
+                curO = curO.next;                
+            } else {
+                curE.next = head;
+                curE = curE.next;
+            }
+            head = head.next;
+        }
+        
+        curE.next = null;
+        curO.next = even.next;
+        
+        return odd.next;
+    }
+}

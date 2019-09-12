@@ -1,0 +1,39 @@
+// find mid/right mid, reverse the remaining part
+// linear scan to check if they have same val while both are not null (one may have one more elment)
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        
+        // 1. find middle and divide list into two part
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        ListNode sec = slow.next;
+        slow.next = null;
+        
+        // 2. reverse the second part for later comparison
+        ListNode prev = null;
+        while (sec != null) {
+            ListNode next = sec.next;
+            sec.next = prev;
+            prev = sec;
+            sec = next;
+        }
+        
+        // 3. compare two part, check if they are same
+        while (head != null && prev != null) {
+            if (head.val != prev.val) {
+                return false;
+            }
+            head = head.next;
+            prev = prev.next;
+        }
+        
+        return true;
+    }
+}
