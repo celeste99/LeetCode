@@ -1,0 +1,43 @@
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+        
+        // 1. divide into left and right part
+        // 1 2 3 4 5
+        // s
+        // f
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }        
+        ListNode prev = null, cur = slow.next;
+        slow.next = null;
+        
+        // 2. reverse the right part
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        
+        // 3. pick one element from both left/right part respectively
+        // 1->2->3
+        // c
+        // 5->4
+        // p
+        cur = head;
+        while (cur != null && prev != null) {
+            ListNode tmp = cur.next;
+            cur.next = prev;
+            prev = prev.next;
+            cur = cur.next;
+            cur.next = tmp;
+            cur = cur.next;
+        }
+        return;
+    }
+}

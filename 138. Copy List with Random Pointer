@@ -1,0 +1,33 @@
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Map<Node, Node> map = new HashMap<>();
+        Node newHead = new Node(head.val);
+        map.put(head, newHead);
+        
+        while (head != null) { // 每次创建next/random，并且连线
+            Node node = map.get(head);
+            if (head.next != null) {
+                Node next = map.get(head.next);
+                if (next == null) {
+                    next = new Node(head.next.val);
+                    map.put(head.next, next);
+                }
+                node.next = next;
+            }
+            
+            if (head.random != null) {
+                Node random = map.get(head.random);
+                if (random == null) {
+                    random = new Node(head.random.val);
+                    map.put(head.random, random);
+                }
+                node.random = random;
+            }
+            
+            head = head.next;
+        }
+        
+        return newHead;
+    }
+}

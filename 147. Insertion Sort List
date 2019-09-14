@@ -1,0 +1,21 @@
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode(0); // dummy will not connect with head this time
+        ListNode cur = head, prev = dummy;
+
+        while (cur != null) {
+            ListNode next = cur.next;
+            while (prev.next != null && prev.next.val < cur.val) {
+                prev = prev.next;
+            }
+            
+            cur.next = prev.next;
+            prev.next = cur;
+            prev = dummy;
+            
+            cur = next;
+        }
+        
+        return dummy.next;
+    }
+}
