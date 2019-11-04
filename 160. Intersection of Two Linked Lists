@@ -31,7 +31,6 @@ public class Solution {
             curA = curA.next;
             curB = curB.next;
         }
-        
-        return null;
+      return null;
     }
-}////
+}/////
